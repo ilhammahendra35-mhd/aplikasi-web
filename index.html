@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keuangan Keluarga</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f766e, #14b8a6);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin-bottom: 8px;
+        }
+
+        .container {
+            width: 95%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 10px;
+        }
+
+        .amount {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .saldo {
+            color: #0f766e;
+        }
+
+        .pemasukan {
+            color: #16a34a;
+        }
+
+        .pengeluaran {
+            color: #dc2626;
+        }
+
+        /* Form */
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section h2,
+        .history h2 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #0f766e;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #115e59;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        /* Table */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+        }
+
+        .income {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .expense {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            background: #dc2626;
+            padding: 7px 12px;
+            font-size: 13px;
+        }
+
+        .delete-btn:hover {
+            background: #b91c1c;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 30px;
+            color: #64748b;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 700px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            form {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>💰 Keuangan Keluarga</h1>
+        <p>Kelola pemasukan dan pengeluaran keluarga dengan mudah</p>
+    </header>
+
+    <div class="container">
+
+        <!-- Dashboard -->
+        <section class="dashboard">
+
+            <div class="card">
+                <h3>Saldo Saat Ini</h3>
+                <div class="amount saldo" id="saldo">
+                    Rp 0
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Total Pemasukan</h3>
+                <div class="amount pemasukan" id="totalPemasukan">
+                    Rp 0
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Total Pengeluaran</h3>
+                <div class="amount pengeluaran" id="totalPengeluaran">
+                    Rp 0
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Form Transaksi -->
+        <section class="card form-section">
+            <h2>➕ Tambah Transaksi</h2>
+
+            <form id="transactionForm">
+
+                <div class="form-group">
+                    <label for="tanggal">Tanggal</label>
+                    <input type="date" id="tanggal" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="jenis">Jenis Transaksi</label>
+                    <select id="jenis" required>
+                        <option value="pemasukan">Pemasukan</option>
+                        <option value="pengeluaran">Pengeluaran</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="kategori">Kategori</label>
+                    <select id="kategori" required>
+                        <option value="Gaji">Gaji</option>
+                        <option value="Bonus">Bonus</option>
+                        <option value="Usaha">Usaha</option>
+                        <option value="Makanan">Makanan</option>
+                        <option value="Belanja">Belanja</option>
+                        <option value="Listrik">Listrik</option>
+                        <option value="Air">Air</option>
+                        <option value="Internet">Internet</option>
+                        <option value="Transportasi">Transportasi</option>
+                        <option value="Pendidikan">Pendidikan</option>
+                        <option value="Kesehatan">Kesehatan</option>
+                        <option value="Cicilan">Cicilan</option>
+                        <option value="Hiburan">Hiburan</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="jumlah">Jumlah (Rp)</label>
+                    <input
+                        type="number"
+                        id="jumlah"
+                        placeholder="Contoh: 500000"
+                        min="1"
+                        required
+                    >
+                </div>
+
+                <div class="form-group full">
+                    <label for="keterangan">Keterangan</label>
+                    <input
+                        type="text"
+                        id="keterangan"
+                        placeholder="Contoh: Belanja kebutuhan dapur"
+                    >
+                </div>
+
+                <div class="full">
+                    <button type="submit">
+                        💾 Simpan Transaksi
+                    </button>
+                </div>
+
+            </form>
+        </section>
+
+        <!-- Riwayat -->
+        <section class="card history">
+            <h2>📋 Riwayat Transaksi</h2>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tanggal</th>
+                            <th>Jenis</th>
+                            <th>Kategori</th>
+                            <th>Keterangan</th>
+                            <th>Jumlah</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="transactionList">
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Keuangan Keluarga</p>
+    </footer>
+
+
+    <script>
+        // Mengambil data dari localStorage
+        let transactions =
+            JSON.parse(localStorage.getItem("familyFinance")) || [];
+
+        // Elemen HTML
+        const form = document.getElementById("transactionForm");
+        const transactionList =
+            document.getElementById("transactionList");
+
+        const saldoElement =
+            document.getElementById("saldo");
+
+        const pemasukanElement =
+            document.getElementById("totalPemasukan");
+
+        const pengeluaranElement =
+            document.getElementById("totalPengeluaran");
+
+        // Format Rupiah
+        function formatRupiah(number) {
+            return new Intl.NumberFormat("id-ID", {
+                style: "currency",
+                currency: "IDR",
+                maximumFractionDigits: 0
+            }).format(number);
+        }
+
+        // Format tanggal
+        function formatTanggal(tanggal) {
+            const date = new Date(tanggal);
+
+            return date.toLocaleDateString("id-ID", {
+                day: "2-digit",
+                month: "2-digit",
+                year: "numeric"
+            });
+        }
+
+        // Tampilkan transaksi
+        function renderTransactions() {
+
+            transactionList.innerHTML = "";
+
+            if (transactions.length === 0) {
+                transactionList.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty">
+                            Belum ada transaksi.
+                        </td>
+                    </tr>
+                `;
+
+                updateDashboard();
+                return;
+            }
+
+            // Transaksi terbaru di atas
+            const sortedTransactions = [...transactions].sort(
+                (a, b) => new Date(b.tanggal) - new Date(a.tanggal)
+            );
+
+            sortedTransactions.forEach(transaction => {
+
+                const row = document.createElement("tr");
+
+                const typeClass =
+                    transaction.jenis === "pemasukan"
+                        ? "income"
+                        : "expense";
+
+                const sign =
+                    transaction.jenis === "pemasukan"
+                        ? "+"
+                        : "-";
+
+                row.innerHTML = `
+                    <td>${formatTanggal(transaction.tanggal)}</td>
+
+                    <td class="${typeClass}">
+                        ${transaction.jenis === "pemasukan"
+                            ? "Pemasukan"
+                            : "Pengeluaran"}
+                    </td>
+
+                    <td>${transaction.kategori}</td>
+
+                    <td>${transaction.keterangan || "-"}</td>
+
+                    <td class="${typeClass}">
+                        ${sign} ${formatRupiah(transaction.jumlah)}
+                    </td>
+
+                    <td>
+                        <button
+                            class="delete-btn"
+                            onclick="deleteTransaction(${transaction.id})">
+                            Hapus
+                        </button>
+                    </td>
+                `;
+
+                transactionList.appendChild(row);
+            });
+
+            updateDashboard();
+        }
+
+        // Update dashboard
+        function updateDashboard() {
+
+            let pemasukan = 0;
+            let pengeluaran = 0;
+
+            transactions.forEach(transaction => {
+
+                if (transaction.jenis === "pemasukan") {
+                    pemasukan += transaction.jumlah;
+                } else {
+                    pengeluaran += transaction.jumlah;
+                }
+
+            });
+
+            const saldo = pemasukan - pengeluaran;
+
+            pemasukanElement.textContent =
+                formatRupiah(pemasukan);
+
+            pengeluaranElement.textContent =
+                formatRupiah(pengeluaran);
+
+            saldoElement.textContent =
+                formatRupiah(saldo);
+
+            // Warna saldo
+            if (saldo < 0) {
+                saldoElement.style.color = "#dc2626";
+            } else {
+                saldoElement.style.color = "#0f766e";
+            }
+        }
+
+        // Simpan transaksi
+        form.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+            const tanggal =
+                document.getElementById("tanggal").value;
+
+            const jenis =
+                document.getElementById("jenis").value;
+
+            const kategori =
+                document.getElementById("kategori").value;
+
+            const jumlah =
+                Number(document.getElementById("jumlah").value);
+
+            const keterangan =
+                document.getElementById("keterangan").value;
+
+            const transaction = {
+                id: Date.now(),
+                tanggal,
+                jenis,
+                kategori,
+                jumlah,
+                keterangan
+            };
+
+            transactions.push(transaction);
+
+            localStorage.setItem(
+                "familyFinance",
+                JSON.stringify(transactions)
+            );
+
+            form.reset();
+
+            // Isi tanggal dengan tanggal hari ini
+            setToday();
+
+            renderTransactions();
+
+            alert("Transaksi berhasil disimpan!");
+        });
+
+        // Hapus transaksi
+        function deleteTransaction(id) {
+
+            const confirmDelete =
+                confirm("Yakin ingin menghapus transaksi ini?");
+
+            if (!confirmDelete) {
+                return;
+            }
+
+            transactions =
+                transactions.filter(transaction =>
+                    transaction.id !== id
+                );
+
+            localStorage.setItem(
+                "familyFinance",
+                JSON.stringify(transactions)
+            );
+
+            renderTransactions();
+        }
+
+        // Set tanggal hari ini
+        function setToday() {
+
+            const today = new Date();
+
+            const year = today.getFullYear();
+
+            const month =
+                String(today.getMonth() + 1).padStart(2, "0");
+
+            const day =
+                String(today.getDate()).padStart(2, "0");
+
+            document.getElementById("tanggal").value =
+                `${year}-${month}-${day}`;
+        }
+
+        // Jalankan saat halaman dibuka
+        setToday();
+        renderTransactions();
+
+    </script>
+
+</body>
+</html>
