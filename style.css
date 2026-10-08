@@ -1,0 +1,428 @@
+/* ========================================
+   KEUANGAN KELUARGA
+   style.css
+======================================== */
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+/* ========================================
+   HEADER
+======================================== */
+
+header {
+    background: linear-gradient(
+        135deg,
+        #0f766e,
+        #14b8a6
+    );
+
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+header p {
+    font-size: 15px;
+    opacity: 0.9;
+}
+
+/* ========================================
+   CONTAINER
+======================================== */
+
+.container {
+    width: 95%;
+    max-width: 1100px;
+    margin: 30px auto;
+}
+
+/* ========================================
+   DASHBOARD
+======================================== */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 16px;
+
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.05);
+
+    transition: 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.card h3 {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.amount {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.saldo {
+    color: #0f766e;
+}
+
+.pemasukan {
+    color: #16a34a;
+}
+
+.pengeluaran {
+    color: #dc2626;
+}
+
+/* ========================================
+   FORM TRANSAKSI
+======================================== */
+
+.form-section {
+    margin-bottom: 30px;
+}
+
+.form-section h2,
+.history h2 {
+    font-size: 21px;
+    margin-bottom: 20px;
+    color: #0f172a;
+}
+
+form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 7px;
+    color: #334155;
+}
+
+/* Input & Select */
+
+input,
+select {
+    width: 100%;
+    padding: 12px 14px;
+
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+
+    background: #ffffff;
+    color: #1e293b;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+input:focus,
+select:focus {
+    border-color: #14b8a6;
+
+    box-shadow:
+        0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+
+input::placeholder {
+    color: #94a3b8;
+}
+
+/* Full width */
+
+.full {
+    grid-column: 1 / -1;
+}
+
+/* ========================================
+   BUTTON
+======================================== */
+
+button {
+    border: none;
+    border-radius: 9px;
+
+    padding: 12px 20px;
+
+    background: #0f766e;
+    color: white;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background: #115e59;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+/* ========================================
+   TABLE / RIWAYAT
+======================================== */
+
+.history {
+    overflow: hidden;
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    min-width: 750px;
+
+    border-collapse: collapse;
+
+    background: #ffffff;
+}
+
+thead {
+    background: #f8fafc;
+}
+
+th {
+    padding: 14px;
+    text-align: left;
+
+    color: #475569;
+    font-size: 13px;
+
+    border-bottom: 2px solid #e2e8f0;
+}
+
+td {
+    padding: 14px;
+
+    font-size: 14px;
+
+    border-bottom: 1px solid #e2e8f0;
+}
+
+tbody tr {
+    transition: 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+/* Pemasukan */
+
+.income {
+    color: #16a34a;
+    font-weight: bold;
+}
+
+/* Pengeluaran */
+
+.expense {
+    color: #dc2626;
+    font-weight: bold;
+}
+
+/* ========================================
+   DELETE BUTTON
+======================================== */
+
+.delete-btn {
+    background: #dc2626;
+    padding: 7px 12px;
+
+    font-size: 12px;
+}
+
+.delete-btn:hover {
+    background: #b91c1c;
+}
+
+/* ========================================
+   EMPTY DATA
+======================================== */
+
+.empty {
+    text-align: center;
+    padding: 35px;
+
+    color: #64748b;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+footer {
+    margin-top: 40px;
+
+    padding: 25px 20px;
+
+    background: #0f172a;
+    color: #cbd5e1;
+
+    text-align: center;
+
+    font-size: 14px;
+}
+
+/* ========================================
+   SCROLLBAR
+======================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #e2e8f0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #94a3b8;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ========================================
+   RESPONSIVE TABLET
+======================================== */
+
+@media (max-width: 850px) {
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .amount {
+        font-size: 23px;
+    }
+}
+
+/* ========================================
+   RESPONSIVE HP
+======================================== */
+
+@media (max-width: 600px) {
+
+    header {
+        padding: 25px 15px;
+    }
+
+    header h1 {
+        font-size: 25px;
+    }
+
+    header p {
+        font-size: 13px;
+    }
+
+    .container {
+        width: 92%;
+        margin: 20px auto;
+    }
+
+    .card {
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    form {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: auto;
+    }
+
+    .form-section h2,
+    .history h2 {
+        font-size: 18px;
+    }
+
+    .amount {
+        font-size: 21px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .table-wrapper {
+        margin: 0 -5px;
+    }
+}
+
+/* ========================================
+   ANIMASI
+======================================== */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.4s ease;
+}
